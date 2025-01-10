@@ -35,38 +35,24 @@ main {
     min-height: 5rem;
 
     & > ul {
-        padding-inline-start: 0rem;
+        padding-inline-start: 0;
+        min-height: 230px;
         overflow: auto;
-        height: 23rem;
-        
     }
     & > ul > li {
         list-style-type: none;
-        padding: .8rem 1.6rem;
-        font-size: 1.6 rem;
-        display: flex;
+        padding: 0.8rem 1.6rem;
+        font-size: 1.6rem;
+        background-color: #fefefe;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
         justify-content: space-between;
-        position: relative;
-        margin-bottom: .8rem;
-        background-color: #efefef;
-    }
-    & > ul > li:last-child {
-        margin-bottom: 0;
-    }
-    & > ul > li > button {
-        width: 2.4rem;
-        height: 2.4rem;
-        background-color: #e64c3c;
-        color: #fff;
-        border: none;
-        border-radius: .4rem;
-        cursor: pointer;
-        
-        &:hover {
-            background: #da5c3e;
-        }
-    }
+        margin-bottom: 0.8rem;
+    }   
 }
+.todo-list-section li:last-child {
+    margin-bottom: 0;
+    }
 
 .checkbox-label-container {
     display: flex;
@@ -76,11 +62,14 @@ main {
     & > label {
         cursor: pointer;
     }
-
     & > input {
         margin-right: .8rem;
         cursor: pointer;
     }
+}
+
+#create-todo-section {
+    width: 100%;
 }
 
 #create-todo-form {
@@ -89,38 +78,38 @@ main {
     flex-direction: row;
     width: 100%;
 }
-
-#create-todo-form {
-    width: 100%;
-}
-
 .input-description {
-    height: 3.2rem;
+    height: 4.5rem;
     width: 100%;
     font-size: 1.6rem;
-    border-radius: .4rem;
-    margin-right: .4rem;
-    outline: 0;
-    border: 1px solif #646464;
-    padding-left: .8rem;
-
-    &:focus {
-        border: 1px solid #5eb7f6;
-    }
+    border-radius: .8rem;
+    margin-right: 1rem;
+    border: 1px solid #EEEEEE;
+    padding-left: 1.6rem;
+    color: #B1BACB;
 }
-
+.input-etiqueta {
+    height: 4.5rem;
+    width: 100%;
+    font-size: 1.6rem;
+    border-radius: .8rem;
+    border: 1px solid #EEEEEE;
+    padding-left: 1.6rem;
+    color: #B1BACB;
+    margin-right: 2rem;
+}
 .add-task-btn {
-    box-sizing: border-box;
-    height: 3.6rem;
-    width: 3.6rem;
-    color: white;
-    background-color: #8f49e7;
-    border: none;
+    width: 7rem;
+    height: 4.5rem;
+    border: 1px;
     border-radius: .4rem;
-    font-size: 2.4rem;
-    cursor: pointer;
-    
+    background-color: #2D70FD;
+    color: white;
+    margin-right: 2rem;
+    font-size: 2rem; 
+
     &:hover {
-        opacity: .7;
+        cursor: pointer;
+        opacity: .8;
     }
 }
