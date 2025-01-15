@@ -1,28 +1,87 @@
 let tasks = [
-    { id: 1 , description: 'Implementar tela de listagem de tarefa', etiqueta: 'frontend', dia: '09/01/2025',  checked: false},
-    { id: 2 , description: 'Criar endpoint para cadastro de tarefas', etiqueta: 'backend', dia: '09/01/2025',  checked: false},
-    { id: 3 , description: 'Implementar protótipo da listagem de tarefas', etiqueta: 'ux', dia: '09/01/2025',
+    { id: 1 , description: 'Implementar tela de listagem de tarefa', etiqueta: 'frontend', date: '09/01/2025',  checked: false},
+    { id: 2 , description: 'Criar endpoint para cadastro de tarefas', etiqueta: 'backend', date: '09/01/2025',  checked: false},
+    { id: 3 , description: 'Implementar protótipo da listagem de tarefas', etiqueta: 'ux', date: '09/01/2025',
     checked: false},
 ]
 
-const getCheckBoxInput = ({id, description, etiqueta, dia, checked}) => {
+const renderTasksProgressData = (tasks) => {
+    let tasksProgress;
+    const tasksProgressDOM = document.getElementById('tasks-progress');
+
+    if (tasksProgressDOM) {
+        tasksProgress = tasksProgressDOM;
+    } else {
+        const newTasksProgressDOM = document.createElement('div');
+        newTasksProgressDOM.id = 'tasks-progress';
+        document.getElementById('todo-footer').appendChild(newTasksProgressDOM);
+        tasksProgress = newTasksProgressDOM;
+    }
+
+    const doneTasks = tasks.filter(({ checked }) => checked).length;
+    tasksProgress.textContent = `${doneTasks} tarefas concluídas`;
+};
+
+
+const createTaskListItem = (task, checkbox) => {
+    const list = document.getElementById('todo-list'); 
+    const toDo = document.createElement('li');
+
+    toDo.id = task.id;
+    toDo.appendChild(checkbox);
+    list.appendChild(toDo);
+};
+
+const getCheckBoxInput = ({ id, description, etiqueta, date, checked }) => {
+    const wrapper = document.createElement('div');
     const checkbox = document.createElement('input');
-    const label = document.createElement ('label');
-    const wrapper = document.createElement ('div');
+    const buttonLabel = document.createElement('span');
+    const descriptionDiv = document.createElement('div');
+    const detailsDiv = document.createElement('div');
+    const etiquetaSpan = document.createElement('span');
+    const dateSpan = document.createElement('span');
     const checkboxId = `${id}-checkbox`;
 
+    wrapper.className = 'checkbox-wrapper';
     checkbox.type = 'checkbox';
     checkbox.id = checkboxId;
     checkbox.checked = checked || false;
+    checkbox.className = 'hidden-checkbox';
 
-    label.textContent = `${description}  ${etiqueta} Criado em: ${dia}`;
-    label.htmlFor = checkboxId;
-    wrapper.className = 'checkbox-label-container';
+    // Adiciona um event listener para atualizar o progresso quando o checkbox é alterado
+    checkbox.addEventListener('change', () => {
+        tasks.find(task => task.id === id).checked = checkbox.checked;
+        renderTasksProgressData(tasks);
+    });
+
+    // Configura o texto da descrição
+    descriptionDiv.textContent = description;
+    descriptionDiv.className = 'task-description';
+
+    // Configura o texto da etiqueta
+    etiquetaSpan.textContent = etiqueta;
+    etiquetaSpan.className = 'task-etiqueta';
+
+    // Configura o texto da data
+    dateSpan.textContent = `Criado em: ${date}`;
+    dateSpan.className = 'task-date';
+
+    // Adiciona etiqueta e data ao detailsDiv
+    detailsDiv.className = 'task-details';
+    detailsDiv.appendChild(etiquetaSpan);
+    detailsDiv.appendChild(dateSpan);
+
+    // Configura o buttonLabel
+    buttonLabel.className = 'button-label';
+    buttonLabel.textContent = 'Concluir';
+
     wrapper.appendChild(checkbox);
-    wrapper.appendChild(label);
+    wrapper.appendChild(buttonLabel);
+    wrapper.appendChild(descriptionDiv);
+    wrapper.appendChild(detailsDiv);
 
     return wrapper;
-}
+};
 
 const getNewTaskId = () => {
     const lastId = tasks [tasks.length - 1]?.id;
@@ -33,17 +92,25 @@ const getNewTaskData = (event) => {
     const description = event.target.elements.description.value;
     const etiqueta = event.target.elements.etiqueta.value;
     const id = getNewTaskId();
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); 
+    const year = today.getFullYear();
+    const date = `${day}/${month}/${year}`;
 
-    return {id, description, etiqueta, dia}
+    return { id, description, etiqueta, date };
 }
 
 const createTask = (event) => {
-    const NewTaskData = getNewTaskData (event);
-    const {id, description, etiqueta, dia} = NewTaskData;
+    event.preventDefault(); 
 
-    const checkbox = getCheckBoxInput (NewTaskData)
-    event.preventDefault();
+    const newTaskData = getNewTaskData(event);
+    tasks.push(newTaskData); 
+
+    const checkbox = getCheckBoxInput(newTaskData);
+    createTaskListItem(newTaskData, checkbox);
 }
+
 
 
 
@@ -55,6 +122,8 @@ window.onload = function() {
     tasks.forEach((task) => {
         const checkbox =  getCheckBoxInput(task);
 
-        createTaskListItem(task, checkbox)
+        createTaskListItem (task, checkbox);
     })
+
+    renderTasksProgressData(tasks);
 }
