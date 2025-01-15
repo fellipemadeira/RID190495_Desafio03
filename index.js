@@ -48,30 +48,28 @@ const getCheckBoxInput = ({ id, description, etiqueta, date, checked }) => {
     checkbox.checked = checked || false;
     checkbox.className = 'hidden-checkbox';
 
-    // Adiciona um event listener para atualizar o progresso quando o checkbox é alterado
     checkbox.addEventListener('change', () => {
         tasks.find(task => task.id === id).checked = checkbox.checked;
         renderTasksProgressData(tasks);
     });
 
-    // Configura o texto da descrição
+
     descriptionDiv.textContent = description;
     descriptionDiv.className = 'task-description';
 
-    // Configura o texto da etiqueta
+
     etiquetaSpan.textContent = etiqueta;
     etiquetaSpan.className = 'task-etiqueta';
 
-    // Configura o texto da data
+
     dateSpan.textContent = `Criado em: ${date}`;
     dateSpan.className = 'task-date';
 
-    // Adiciona etiqueta e data ao detailsDiv
     detailsDiv.className = 'task-details';
     detailsDiv.appendChild(etiquetaSpan);
     detailsDiv.appendChild(dateSpan);
 
-    // Configura o buttonLabel
+
     buttonLabel.className = 'button-label';
     buttonLabel.textContent = 'Concluir';
 
